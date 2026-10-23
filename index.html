@@ -435,5 +435,17 @@ document.addEventListener('keydown',e=>{
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
+ 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://qeythjppxmemiusdumgi.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_YxE_sMJG7siOmL3Ol537EQ_GeSoYTaB";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+</script>
+
 </body>
 </html>
