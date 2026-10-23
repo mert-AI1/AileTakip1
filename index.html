@@ -380,9 +380,36 @@ async function copyCode(){
     toast('Kodu seçip kopyalayabilirsiniz.');
   }
 }
-function submitLogin(){
-  toast('Giriş ve aile bağlantısı için kimlik doğrulama sistemi henüz yapılandırılmalıdır.');
+
+
+async function submitLogin() {
+  const email = document.getElementById('emailInput').value.trim();
+  const password = document.getElementById('passwordInput').value;
+
+  if (!email || !password) {
+    toast('E-posta adresinizi ve şifrenizi girin.');
+    return;
+  }
+
+  try {
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (error) {
+      toast('Giriş başarısız. E-posta ve şifrenizi kontrol edin.');
+      return;
+    }
+
+    toast('Giriş başarılı!');
+    closeLogin();
+  } catch (e) {
+    toast('Bağlantı hatası. Tekrar deneyin.');
+  }
 }
+
+
 function requestLocation(){
   const result=document.getElementById('locationResult');
   if(!('geolocation' in navigator)){
