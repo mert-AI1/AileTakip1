@@ -142,6 +142,86 @@ footer strong{color:#c9ccda}
 button:focus-visible{outline:2px solid #ff687d;outline-offset:3px}
 @media(min-width:720px){main{padding-top:34px}.hero{padding:42px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.nav{left:50%;right:auto;transform:translateX(-50%);width:min(620px,100%);border:1px solid #ffffff1c;border-bottom:0;border-radius:18px 18px 0 0}.hero p{font-size:15px}}
 @media(max-width:360px){.nav button{font-size:9px;padding:5px 3px}.nav button span{font-size:17px}.grid{gap:8px}.card{padding:13px}}
+ 
+/* AÇIK TEMA */
+body.light-theme {
+  --bg: #f3f5f9;
+  --panel: #ffffff;
+  --text: #172033;
+  --muted: #5c667a;
+  --line: #dce2ec;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body.light-theme .topbar,
+body.light-theme .nav {
+  background: #ffffffed;
+  border-color: #dce2ec;
+}
+
+body.light-theme .hero {
+  background: linear-gradient(130deg, #fff0f2, #ffffff 65%, #f0edff);
+  color: #172033;
+  border-color: #ffd0d8;
+}
+
+body.light-theme .hero p,
+body.light-theme .card p,
+body.light-theme .section-head p {
+  color: #5c667a;
+}
+
+body.light-theme .card {
+  background: #ffffff;
+  color: #172033;
+  border-color: #dce2ec;
+}
+
+body.light-theme .secondary {
+  background: #ffffff;
+  color: #172033;
+  border-color: #cbd3e1;
+}
+
+body.light-theme .quiet {
+  color: #334155;
+}
+
+body.light-theme .field input,
+body.light-theme .field select,
+body.light-theme .field textarea {
+  background: #ffffff;
+  color: #172033;
+  border-color: #cbd3e1;
+}
+
+body.light-theme .field label,
+body.light-theme .list-row b {
+  color: #334155;
+}
+
+body.light-theme .modal-box {
+  background: #ffffff;
+  color: #172033;
+  border-color: #dce2ec;
+}
+
+body.light-theme .mapbox {
+  background: radial-gradient(ellipse at 45% 40%, #e2e8f0, #f8fafc 68%);
+}
+
+body.light-theme .map-caption {
+  background: #ffffffed;
+  color: #172033;
+  border-color: #dce2ec;
+}
+
+body.light-theme .road {
+  background: #cbd5e1;
+  border-color: #94a3b8;
+}
+
 </style>
 </head>
 <body>
@@ -222,9 +302,34 @@ button:focus-visible{outline:2px solid #ff687d;outline-offset:3px}
 <section class="page" id="settings">
   <div class="section-head"><div><h2>Ayarlar</h2><p>Uygulama tercihlerinizi düzenleyin.</p></div></div>
   <div class="card">
+   
+    <div class="card-icon">🔐</div>
+    <h3>Şifre değiştirme</h3>
+    <p>Hesabınızın şifresini güncelleyin.</p>
+
+    <div class="field">
+      <label>Yeni şifre</label>
+      <input id="newPassword" type="password" placeholder="En az 8 karakter">
+    </div>
+
+    <div class="field">
+      <label>Yeni şifreyi tekrar girin</label>
+      <input id="confirmPassword" type="password" placeholder="Şifreyi tekrar girin">
+    </div>
+
+    <button class="btn primary" onclick="changePassword()">Şifreyi güncelle</button>
+
     <div class="list-row"><div class="card-icon">♧</div><div><b>Bildirimler</b><small>Bildirim tercihi</small></div><input class="switch" type="checkbox" checked aria-label="Bildirimler"></div>
     <div class="list-row"><div class="card-icon">⌖</div><div><b>Konum izni hatırlatması</b><small>Konum izinleri hakkında hatırlatma</small></div><input class="switch" type="checkbox" checked aria-label="Konum hatırlatması"></div>
-    <div class="list-row"><div class="card-icon">◐</div><div><b>Koyu tema</b><small>AileTakip görünümü</small></div><span class="tag green">Açık</span></div>
+    <div class="list-row">
+  <div class="card-icon">◐</div>
+  <div>
+    <b>Tema</b>
+    <small id="themeLabel">Koyu tema</small>
+  </div>
+  <button class="btn secondary" id="themeToggle"
+    onclick="toggleTheme()">Açık temaya geç</button>
+</div>
     <div class="list-row"><div class="card-icon">↗</div><div><b>Uygulama sürümü</b><small>AileTakip</small></div><span class="tag">1.0</span></div>
   </div>
 </section>
@@ -342,7 +447,13 @@ button:focus-visible{outline:2px solid #ff687d;outline-offset:3px}
     </div>
     <div id="codeFields" style="display:none"><div class="field"><label>Aile bağlantı kodu</label><input id="codeInput" type="text" placeholder="Aile bağlantı kodu" autocomplete="off"></div></div>
     <div class="notice">Hesap doğrulaması ve aile bağlantısının çalışması için güvenli sunucu bağlantısı gereklidir.</div>
-    <div class="modal-actions"><button class="btn quiet" onclick="closeLogin()">Kapat</button><button class="btn primary" onclick="submitLogin()">Devam et</button></div>
+
+<div class="modal-actions" style="flex-wrap:wrap">
+  <button class="btn quiet" onclick="closeLogin()">Kapat</button>
+  <button class="btn secondary" onclick="submitLogin()">Giriş yap</button>
+  <button class="btn primary" onclick="registerAccount()">Hesap oluştur</button>
+</div>
+
   </div>
 </div>
 
@@ -381,7 +492,96 @@ async function copyCode(){
   }
 }
 
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light-theme');
 
+  document.getElementById('themeLabel').textContent =
+    isLight ? 'Açık tema' : 'Koyu tema';
+
+  document.getElementById('themeToggle').textContent =
+    isLight ? 'Koyu temaya geç' : 'Açık temaya geç';
+
+  document.getElementById('themeToggle').setAttribute('aria-pressed', isLight);
+}
+
+async function changePassword() {
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+
+  if (newPassword.length < 8) {
+    toast('Şifre en az 8 karakter olmalı.');
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    toast('Şifreler eşleşmiyor.');
+    return;
+  }
+
+  try {
+    const { data: { user }, error: userError } =
+      await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+      toast('Önce hesabınıza giriş yapın.');
+      return;
+    }
+
+    const { error } = await supabaseClient.auth.updateUser({
+      password: newPassword
+    });
+
+    if (error) {
+      toast('Şifre güncellenemedi. Tekrar deneyin.');
+      return;
+    }
+
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+    toast('Şifreniz başarıyla güncellendi!');
+  } catch (e) {
+    toast('Bağlantı hatası. Tekrar deneyin.');
+  }
+}
+
+async function registerAccount() {
+  const email = document.getElementById('emailInput').value.trim();
+  const password = document.getElementById('passwordInput').value;
+
+  if (!email || !password) {
+    toast('E-posta ve şifrenizi girin.');
+    return;
+  }
+
+  if (password.length < 8) {
+    toast('Şifreniz en az 8 karakter olmalı.');
+    return;
+  }
+
+  try {
+    const { data, error } = await supabaseClient.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        emailRedirectTo: 'https://avbaharselcuk.com.tr/AileTakip1/'
+      }
+    });
+
+    if (error) {
+      toast('Hesap oluşturulamadı. Bilgileri kontrol edip tekrar deneyin.');
+      return;
+    }
+
+    if (data.session) {
+      closeLogin();
+      toast('Hesabınız oluşturuldu ve giriş yapıldı!');
+    } else {
+      toast('Hesabınız oluşturuldu. E-posta kutunuzu kontrol edip adresinizi doğrulayın.');
+    }
+  } catch (e) {
+    toast('Bağlantı hatası. Tekrar deneyin.');
+  }
+}
 async function submitLogin() {
   const email = document.getElementById('emailInput').value.trim();
   const password = document.getElementById('passwordInput').value;
