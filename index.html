@@ -1,36 +1,92 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#09090d">
+<meta name="description" content="AileTakip — aile bağlantısı ve izin kontrollü konum paylaşımı.">
 <title>AileTakip — Güvenli Bağlantı</title>
 <style>
-:root{--bg:#08090d;--panel:#12141c;--panel2:#191c26;--red:#ff304f;--red2:#ff5b6f;--text:#f5f6fa;--muted:#9ba1b2;--line:#292d3a;--green:#4ee0a0}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;overflow-x:hidden}
+:root{--bg:#08090d;--panel:#12141c;--red:#ff304f;--text:#f5f6fa;--muted:#9ba1b2;--line:#292d3a;--green:#4ee0a0}
+*{box-sizing:border-box;scrollbar-width:thin;scrollbar-color:#363a48 #0a0b10}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;overflow-x:hidden}
 body:before,body:after{content:"";position:fixed;z-index:-2;width:55vw;height:55vw;border-radius:50%;filter:blur(85px);opacity:.17;pointer-events:none;animation:float 12s ease-in-out infinite alternate}
-body:before{background:#ff163f;top:-20vw;left:-15vw}body:after{background:#5528ff;bottom:-25vw;right:-15vw;animation-delay:-5s}
-@keyframes float{to{transform:translate(9vw,7vw) scale(1.18)}}@keyframes pulse{0%,100%{box-shadow:0 0 12px #ff304f33}50%{box-shadow:0 0 28px #ff304f77}}@keyframes drift{to{transform:translateY(-8px)}}
-*{scrollbar-width:thin;scrollbar-color:#363a48 #0a0b10}
+body:before{background:#ff163f;top:-20vw;left:-15vw}
+body:after{background:#5528ff;bottom:-25vw;right:-15vw;animation-delay:-5s}
+@keyframes float{to{transform:translate(9vw,7vw) scale(1.18)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 12px #ff304f33}50%{box-shadow:0 0 28px #ff304f77}}
+@keyframes drift{to{transform:translateY(-4px)}}
 .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#090a0fe8;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff12}
-.brand{display:flex;align-items:center;gap:10px;font-weight:850;letter-spacing:.2px}.logo{display:grid;place-items:center;width:38px;height:38px;border-radius:13px;background:linear-gradient(145deg,#ff5268,#a50026);box-shadow:0 0 24px #ff304f44;font-size:19px}.brand small{display:block;color:var(--muted);font-weight:500;font-size:10px;letter-spacing:2px;margin-top:2px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:850}
+.logo{display:grid;place-items:center;width:38px;height:38px;border-radius:13px;background:linear-gradient(145deg,#ff5268,#a50026);box-shadow:0 0 24px #ff304f44;font-size:19px}
+.brand small{display:block;color:var(--muted);font-weight:500;font-size:10px;letter-spacing:2px;margin-top:2px}
 .status{font-size:11px;color:#ff9baa;border:1px solid #ff304f44;background:#ff304f12;border-radius:99px;padding:7px 10px}
-main{width:min(1080px,100%);margin:auto;padding:24px 16px 100px}.hero{position:relative;overflow:hidden;border:1px solid #ff304f35;border-radius:28px;padding:28px 22px;background:linear-gradient(130deg,#211018ed,#12131dee 60%,#161425ed);box-shadow:0 22px 70px #0007}
-.hero:after{content:"";position:absolute;width:190px;height:190px;border:1px solid #ff536b30;border-radius:50%;right:-60px;top:-65px;box-shadow:0 0 0 24px #ff536b09,0 0 0 48px #ff536b06}
-.eyebrow{color:#ff8394;font-size:11px;letter-spacing:2.4px;font-weight:800;text-transform:uppercase}.hero h1{font-size:clamp(31px,7vw,54px);line-height:1.04;letter-spacing:-1.7px;margin:13px 0}.hero h1 span{color:var(--red)}.hero p{color:#b5bac8;line-height:1.65;max-width:600px;font-size:14px}.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
-.btn{border:0;border-radius:13px;padding:13px 16px;font-weight:750;font-size:13px;cursor:pointer;transition:.2s}.btn:active{transform:scale(.98)}.primary{background:linear-gradient(120deg,#ff3d59,#e41539);color:white;box-shadow:0 8px 25px #ff304f25}.secondary{background:#ffffff0a;border:1px solid #ffffff20;color:#f4f5fa}.quiet{background:transparent;border:1px solid var(--line);color:#cdd1dc}
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:28px 2px 13px}.section-head h2{font-size:19px;margin:0}.section-head p{font-size:11px;color:var(--muted);margin:5px 0 0}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{background:linear-gradient(150deg,#151720f2,#101118f5);border:1px solid var(--line);border-radius:20px;padding:17px;min-width:0}.card h3{font-size:14px;margin:12px 0 7px}.card p{font-size:12px;line-height:1.55;color:var(--muted);margin:0}.card-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:#ff304f17;border:1px solid #ff304f2a;font-size:20px}.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.tag{font-size:10px;padding:6px 8px;border-radius:99px;color:#ff9cab;background:#ff304f12;border:1px solid #ff304f2c;white-space:nowrap}.tag.green{color:#8af0c2;background:#4ee0a012;border-color:#4ee0a02b}.wide{grid-column:1/-1}
-.form-panel{display:none;margin-top:16px}.form-panel.active{display:block;animation:drift .25s ease}.field{margin:12px 0}.field label{display:block;color:#c7cad5;font-size:12px;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid #303442;background:#0b0c12;color:white;padding:13px;border-radius:12px;font:inherit;font-size:14px;outline:none}.field input:focus,.field select:focus{border-color:#ff5268;box-shadow:0 0 0 3px #ff304f18}.hint{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px}
+main{width:min(1080px,100%);margin:auto;padding:24px 16px 100px}
+.hero{position:relative;overflow:hidden;border:1px solid #ff304f35;border-radius:28px;padding:28px 22px;background:linear-gradient(130deg,#211018ed,#12131dee 60%,#161425ed);box-shadow:0 22px 70px #0007}
+.hero:after{content:"";position:absolute;width:190px;height:190px;border:1px solid #ff536b30;border-radius:50%;right:-60px;top:-65px;box-shadow:0 0 0 24px #ff536b09,0 0 0 48px #ff536b06;pointer-events:none}
+.eyebrow{color:#ff8394;font-size:11px;letter-spacing:2.4px;font-weight:800;text-transform:uppercase}
+.hero h1{font-size:clamp(31px,7vw,54px);line-height:1.04;letter-spacing:-1.7px;margin:13px 0}
+.hero h1 span{color:var(--red)}
+.hero p{color:#b5bac8;line-height:1.65;max-width:600px;font-size:14px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.btn{border:0;border-radius:13px;padding:13px 16px;font-weight:750;font-size:13px;cursor:pointer;transition:.2s}
+.btn:active{transform:scale(.98)}
+.primary{background:linear-gradient(120deg,#ff3d59,#e41539);color:white;box-shadow:0 8px 25px #ff304f25}
+.secondary{background:#ffffff0a;border:1px solid #ffffff20;color:#f4f5fa}
+.quiet{background:transparent;border:1px solid var(--line);color:#cdd1dc}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:28px 2px 13px}
+.section-head h2{font-size:19px;margin:0}
+.section-head p{font-size:11px;color:var(--muted);margin:5px 0 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{background:linear-gradient(150deg,#151720f2,#101118f5);border:1px solid var(--line);border-radius:20px;padding:17px;min-width:0}
+.card h3{font-size:14px;margin:12px 0 7px}
+.card p{font-size:12px;line-height:1.55;color:var(--muted);margin:0}
+.card-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:#ff304f17;border:1px solid #ff304f2a;font-size:20px}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tag{font-size:10px;padding:6px 8px;border-radius:99px;color:#ff9cab;background:#ff304f12;border:1px solid #ff304f2c;white-space:nowrap}
+.tag.green{color:#8af0c2;background:#4ee0a012;border-color:#4ee0a02b}
+.field{margin:12px 0}
+.field label{display:block;color:#c7cad5;font-size:12px;margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;border:1px solid #303442;background:#0b0c12;color:white;padding:13px;border-radius:12px;font:inherit;font-size:14px;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#ff5268;box-shadow:0 0 0 3px #ff304f18}
 .mapbox{height:220px;border-radius:16px;position:relative;overflow:hidden;border:1px solid #2c303e;background:radial-gradient(ellipse at 45% 40%,#282332,#11131b 68%);margin-top:14px}
 .map-grid{position:absolute;inset:-30%;background-image:linear-gradient(#ffffff0c 1px,transparent 1px),linear-gradient(90deg,#ffffff0c 1px,transparent 1px);background-size:30px 30px;transform:rotate(-13deg)}
-.road{position:absolute;height:13px;background:#343746;border:1px solid #44495a;border-radius:99px;transform:rotate(-25deg);width:130%;left:-10%;top:42%}.road.r2{transform:rotate(31deg);top:65%;left:-12%;height:9px}.road.r3{transform:rotate(75deg);top:10%;left:42%;width:90%;height:8px}
-.pin{position:absolute;left:51%;top:44%;width:17px;height:17px;border-radius:50%;background:var(--red);border:4px solid #ffd1d8;box-shadow:0 0 0 9px #ff304f26,0 0 25px #ff304f;animation:pulse 2s infinite}.map-caption{position:absolute;bottom:12px;left:12px;background:#08090ddd;border:1px solid #ffffff18;border-radius:11px;padding:10px 12px;font-size:11px}.map-caption b{display:block;margin-bottom:3px}.map-caption span{color:var(--muted)}
-.nav{position:fixed;z-index:30;bottom:0;left:0;right:0;display:flex;justify-content:space-around;gap:2px;padding:10px 5px calc(10px + env(safe-area-inset-bottom));background:#0b0c12f2;backdrop-filter:blur(20px);border-top:1px solid #ffffff12}.nav button{background:transparent;border:0;color:#8e94a5;font-size:10px;padding:5px 7px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;cursor:pointer}.nav button span{font-size:19px}.nav button.active{color:#ff687d}
-.page{display:none}.page.active{display:block;animation:drift .25s ease}.notice{border:1px solid #ff304f30;background:#ff304f0c;padding:13px 14px;border-radius:14px;color:#ffb0bc;font-size:12px;line-height:1.55;margin-top:14px}.list-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #ffffff0c}.list-row:last-child{border:0}.list-row .card-icon{width:38px;height:38px;flex-shrink:0}.list-row b{font-size:13px}.list-row small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.list-row .tag{margin-left:auto}
-.switch{appearance:none;width:42px;height:25px;background:#333746;border-radius:99px;position:relative;cursor:pointer;flex-shrink:0}.switch:checked{background:#c91e3c}.switch:before{content:"";position:absolute;left:3px;top:3px;width:19px;height:19px;border-radius:50%;background:#fff;transition:.2s}.switch:checked:before{left:20px}
-footer{text-align:center;color:#747b8e;font-size:10px;line-height:1.8;padding:25px 10px 5px}footer strong{color:#c9ccda}
-.modal{position:fixed;inset:0;z-index:50;background:#000a;display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-box{width:min(420px,100%);background:#141620;border:1px solid #383b49;border-radius:22px;padding:22px;box-shadow:0 30px 90px #0009}.modal-box h2{font-size:20px;margin:0 0 8px}.modal-box p{font-size:13px;color:var(--muted);line-height:1.6}.modal-actions{display:flex;gap:9px;margin-top:20px}.modal-actions button{flex:1}
+.road{position:absolute;height:13px;background:#343746;border:1px solid #44495a;border-radius:99px;transform:rotate(-25deg);width:130%;left:-10%;top:42%}
+.road.r2{transform:rotate(31deg);top:65%;left:-12%;height:9px}
+.road.r3{transform:rotate(75deg);top:10%;left:42%;width:90%;height:8px}
+.pin{position:absolute;left:51%;top:44%;width:17px;height:17px;border-radius:50%;background:var(--red);border:4px solid #ffd1d8;box-shadow:0 0 0 9px #ff304f26,0 0 25px #ff304f;animation:pulse 2s infinite}
+.map-caption{position:absolute;bottom:12px;left:12px;background:#08090ddd;border:1px solid #ffffff18;border-radius:11px;padding:10px 12px;font-size:11px}
+.map-caption b{display:block;margin-bottom:3px}
+.map-caption span{color:var(--muted)}
+.nav{position:fixed;z-index:30;bottom:0;left:0;right:0;display:flex;justify-content:space-around;gap:2px;padding:10px 5px calc(10px + env(safe-area-inset-bottom));background:#0b0c12f2;backdrop-filter:blur(20px);border-top:1px solid #ffffff12}
+.nav button{background:transparent;border:0;color:#8e94a5;font-size:10px;padding:5px 7px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;cursor:pointer}
+.nav button span{font-size:19px}
+.nav button.active{color:#ff687d}
+.page{display:none}
+.page.active{display:block;animation:drift .25s ease}
+.notice{border:1px solid #ff304f30;background:#ff304f0c;padding:13px 14px;border-radius:14px;color:#ffb0bc;font-size:12px;line-height:1.55;margin-top:14px}
+.list-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #ffffff0c}
+.list-row:last-child{border:0}
+.list-row .card-icon{width:38px;height:38px;flex-shrink:0}
+.list-row b{font-size:13px}
+.list-row small{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.list-row .tag{margin-left:auto}
+.switch{appearance:none;width:42px;height:25px;background:#333746;border-radius:99px;position:relative;cursor:pointer;flex-shrink:0}
+.switch:checked{background:#c91e3c}
+.switch:before{content:"";position:absolute;left:3px;top:3px;width:19px;height:19px;border-radius:50%;background:#fff;transition:.2s}
+.switch:checked:before{left:20px}
+footer{text-align:center;color:#747b8e;font-size:10px;line-height:1.8;padding:25px 10px 5px}
+footer strong{color:#c9ccda}
+.modal{position:fixed;inset:0;z-index:50;background:#000a;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-box{width:min(420px,100%);max-height:90vh;overflow-y:auto;background:#141620;border:1px solid #383b49;border-radius:22px;padding:22px;box-shadow:0 30px 90px #0009}
+.modal-box h2{font-size:20px;margin:0 0 8px}
+.modal-box p{font-size:13px;color:var(--muted);line-height:1.6}
+.modal-actions{display:flex;gap:9px;margin-top:20px}
+.modal-actions button{flex:1}
+button:focus-visible{outline:2px solid #ff687d;outline-offset:3px}
 @media(min-width:720px){main{padding-top:34px}.hero{padding:42px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.nav{left:50%;right:auto;transform:translateX(-50%);width:min(620px,100%);border:1px solid #ffffff1c;border-bottom:0;border-radius:18px 18px 0 0}.hero p{font-size:15px}}
 @media(max-width:360px){.nav button{font-size:9px;padding:5px 3px}.nav button span{font-size:17px}.grid{gap:8px}.card{padding:13px}}
 </style>
@@ -38,85 +94,95 @@ footer{text-align:center;color:#747b8e;font-size:10px;line-height:1.8;padding:25
 <body>
 <header class="topbar">
   <div class="brand"><div class="logo">⌂</div><div>AileTakip<small>GÜVENLİ BAĞLANTI</small></div></div>
-  <div class="status">● DEMO SÜRÜMÜ</div>
+  <div class="status">● AİLE GÜVENLİĞİ</div>
 </header>
+
 <main>
 <section class="page active" id="home">
   <div class="hero">
     <div class="eyebrow">Birlikte daha güvende</div>
     <h1>Ailenizle bağınız<br><span>hep güçlü kalsın.</span></h1>
-    <p>AileTakip, aile üyelerinin yalnızca kendi izinleriyle konum paylaşabildiği, güvenli ve şeffaf bir aile bağlantısı deneyimi için tasarlanıyor.</p>
-    <div class="hero-actions"><button class="btn primary" onclick="openLogin('email')">Giriş yap / Hesap oluştur</button><button class="btn secondary" onclick="openLogin('code')">Bağlantı koduyla katıl</button></div>
+    <p>AileTakip, aile üyelerinin kendi izinleriyle bağlantıda kalmasına ve konum paylaşımını kontrol etmesine yardımcı olmak için tasarlanmıştır.</p>
+    <div class="hero-actions">
+      <button class="btn primary" onclick="openLogin('email')">Giriş yap / Hesap oluştur</button>
+      <button class="btn secondary" onclick="openLogin('code')">Bağlantı koduyla katıl</button>
+    </div>
   </div>
-  <div class="section-head"><div><h2>Kontrol merkeziniz</h2><p>İhtiyacınız olan her şey, tek yerde.</p></div><span class="tag">AİLE ALANI</span></div>
+  <div class="section-head"><div><h2>Kontrol merkeziniz</h2><p>Aile bağlantısı ve güvenlik tercihleri.</p></div><span class="tag">AİLE ALANI</span></div>
   <div class="grid">
     <article class="card" onclick="showPage('location')"><div class="card-top"><div class="card-icon">⌖</div><span class="tag green">İzin kontrollü</span></div><h3>Konum paylaşımı</h3><p>Aile üyelerinin paylaştığı konumları görüntüleme alanı.</p></article>
-    <article class="card" onclick="showPage('parent')"><div class="card-top"><div class="card-icon">♧</div><span class="tag">Aile</span></div><h3>Ebeveyn modu</h3><p>Aile bağlantıları ve güvenlik tercihleri için özel alan.</p></article>
+    <article class="card" onclick="showPage('parent')"><div class="card-top"><div class="card-icon">♧</div><span class="tag">Aile</span></div><h3>Ebeveyn modu</h3><p>Aile bağlantıları ve güvenlik tercihleri.</p></article>
     <article class="card" onclick="showPage('privacy')"><div class="card-top"><div class="card-icon">⛨</div><span class="tag green">Şeffaflık</span></div><h3>Gizlilik merkezi</h3><p>İzinler, veri kullanımı ve gizlilik ilkeleri.</p></article>
-    <article class="card" onclick="showPage('coming')"><div class="card-top"><div class="card-icon">◎</div><span class="tag">Yakında</span></div><h3>Kamera özellikleri</h3><p>Gelecekte değerlendirilecek özellikler.</p></article>
-    <article class="card" onclick="showPage('coming')"><div class="card-top"><div class="card-icon">♫</div><span class="tag">Yakında</span></div><h3>Ses özellikleri</h3><p>Şu an kullanıma açık değildir.</p></article>
+    <article class="card" onclick="showPage('coming')"><div class="card-top"><div class="card-icon">◎</div><span class="tag">Yakında</span></div><h3>Kamera özellikleri</h3><p>Geliştirme aşamasındaki kamera özellikleri.</p></article>
+    <article class="card" onclick="showPage('coming')"><div class="card-top"><div class="card-icon">♫</div><span class="tag">Yakında</span></div><h3>Ses özellikleri</h3><p>Geliştirme aşamasındaki ses özellikleri.</p></article>
     <article class="card" onclick="showPage('settings')"><div class="card-top"><div class="card-icon">⚙</div><span class="tag">Kişisel</span></div><h3>Ayarlar</h3><p>Hesap, bildirim ve uygulama tercihleri.</p></article>
   </div>
-  <div class="notice">🔒 <b>Gizlilik sözü:</b> Bu demo gizlice kamera açmaz, ses kaydetmez veya arka planda konum izlemez. Konum özelliği için gerçek hesap, açık izin ve güvenli sunucu bağlantısı gerekir.</div>
+  <div class="notice">🔒 <b>Gizlilik sözü:</b> Uygulama gizlice kamera açmaz, ses kaydetmez veya konum izlemez. Konum paylaşımı, açık izin ve güvenli bağlantı gerektirir.</div>
 </section>
 
 <section class="page" id="location">
-  <div class="section-head"><div><h2>Konum merkezi</h2><p>Paylaşılan konumlar ve konum geçmişi.</p></div><span class="tag green">İzin kontrollü</span></div>
-  <div class="card"><div class="card-top"><div><h3 style="margin:0">Aile haritası</h3><p style="margin-top:6px">Görsel örnek — canlı GPS bağlı değil.</p></div><div class="card-icon">⌖</div></div>
-    <div class="mapbox"><div class="map-grid"></div><div class="road"></div><div class="road r2"></div><div class="road r3"></div><div class="pin"></div><div class="map-caption"><b>Örnek aile konumu</b><span>Canlı konum henüz bağlı değil</span></div></div>
+  <div class="section-head"><div><h2>Konum merkezi</h2><p>Aile konumları ve konum geçmişi.</p></div><span class="tag green">İzin kontrollü</span></div>
+  <div class="card">
+    <div class="card-top"><div><h3 style="margin:0">Aile haritası</h3><p style="margin-top:6px">Konum hizmeti bağlantısı gereklidir.</p></div><div class="card-icon">⌖</div></div>
+    <div class="mapbox"><div class="map-grid"></div><div class="road"></div><div class="road r2"></div><div class="road r3"></div><div class="pin"></div><div class="map-caption"><b>Aile konumu</b><span>Harita bağlantısı bekleniyor</span></div></div>
+    <button class="btn primary" style="margin-top:14px" onclick="requestLocation()">Bu cihazın konumunu paylaş</button>
+    <p id="locationResult" style="margin-top:10px">Konum paylaşımı için cihaz izni gerekir. Bu işlem konumu aile üyelerine göndermez.</p>
   </div>
-  <div class="card" style="margin-top:12px"><h3>Konum geçmişi</h3><p>Bu tasarımda geçmiş görüntüleme sınırı en fazla 4 gün olarak planlanmıştır. Bu örnek ekranda gerçek konum geçmişi bulunmaz.</p><div class="field"><label>Görüntüleme aralığı</label><select id="historyRange"><option>Son 24 saat</option><option>Son 2 gün</option><option>Son 3 gün</option><option>Son 4 gün (en fazla)</option></select></div><button class="btn secondary" onclick="toast('Demo sürümünde kayıtlı konum geçmişi bulunmuyor.')">Geçmişi görüntüle</button></div>
-  <div class="notice">Konum paylaşımı yalnızca kişinin açık izniyle çalışmalıdır. İzin verme veya paylaşımı durdurma seçenekleri gerçek sürümde açıkça gösterilmelidir.</div>
+  <div class="card" style="margin-top:12px"><h3>Konum geçmişi</h3><p>Konum geçmişi, hizmet etkinleştirildiğinde en fazla 4 günlük kayıtla sınırlandırılacak şekilde tasarlanmıştır.</p><div class="field"><label>Görüntüleme aralığı</label><select id="historyRange"><option>Son 24 saat</option><option>Son 2 gün</option><option>Son 3 gün</option><option>Son 4 gün (en fazla)</option></select></div><button class="btn secondary" onclick="toast('Konum geçmişi için kayıt ve sunucu bağlantısı gereklidir.')">Geçmişi görüntüle</button></div>
+  <div class="notice">Konum paylaşımı kişinin açık izniyle çalışmalıdır. Paylaşımı durdurma ve izinleri yönetme seçenekleri önemlidir.</div>
 </section>
 
 <section class="page" id="parent">
-  <div class="section-head"><div><h2>Ebeveyn modu</h2><p>Aile bağlantılarını güvenli biçimde yönetin.</p></div><span class="tag">ÖNİZLEME</span></div>
-  <div class="card"><div class="card-top"><div><h3 style="margin:0">Aile alanı</h3><p style="margin-top:6px">Henüz bir aile hesabına bağlanmadınız.</p></div><div class="card-icon">♧</div></div>
-    <div class="field"><label>Aile bağlantı kodu oluşturma (demo)</label><input id="inviteCode" value="AILE-7K4P2" readonly></div><button class="btn primary" onclick="copyCode()">Kodu kopyala</button>
-    <div class="notice">Bu kod örnek amaçlıdır; gerçek davet oluşturmaz ve bir hesaba bağlanmaz.</div>
+  <div class="section-head"><div><h2>Ebeveyn modu</h2><p>Aile bağlantılarını ve güvenlik tercihlerini yönetin.</p></div><span class="tag">AİLE YÖNETİMİ</span></div>
+  <div class="card"><div class="card-top"><div><h3 style="margin:0">Aile alanı</h3><p style="margin-top:6px">Aile hesabı bağlantısı gereklidir.</p></div><div class="card-icon">♧</div></div>
+    <div class="field"><label>Aile bağlantı kodu</label><input id="inviteCode" placeholder="Bağlantı kodunuz" maxlength="40" autocomplete="off"></div>
+    <button class="btn primary" onclick="copyCode()">Kodu kopyala</button>
+    <button class="btn secondary" onclick="toast('Bağlantı kodu oluşturmak için sunucu ve hesap sistemi etkinleştirilmelidir.')" style="margin-left:5px">Kod oluştur</button>
+    <div class="notice">Aile kodlarının güvenli oluşturulması ve doğrulanması için hesap ve sunucu bağlantısı gereklidir.</div>
   </div>
   <div class="card" style="margin-top:12px"><h3>Güvenlik tercihleri</h3>
     <div class="list-row"><div><b>Konum paylaşımı</b><small>Yalnızca açık izin ve hesap bağlantısıyla</small></div><span class="tag green">İzin gerekli</span></div>
     <div class="list-row"><div><b>Geçmiş sınırı</b><small>En fazla 4 gün</small></div><span class="tag">4 gün</span></div>
-    <div class="list-row"><div><b>Kamera / ses</b><small>Henüz kullanıma açık değil</small></div><span class="tag">Yakında</span></div>
+    <div class="list-row"><div><b>Kamera / ses</b><small>Özellikler etkinleştirildiğinde açık izin gerekir</small></div><span class="tag">Yakında</span></div>
   </div>
 </section>
 
 <section class="page" id="settings">
-  <div class="section-head"><div><h2>Ayarlar</h2><p>Uygulama deneyiminizi düzenleyin.</p></div></div>
+  <div class="section-head"><div><h2>Ayarlar</h2><p>Uygulama tercihlerinizi düzenleyin.</p></div></div>
   <div class="card">
-    <div class="list-row"><div class="card-icon">♧</div><div><b>Bildirimler</b><small>Örnek arayüz tercihi</small></div><input class="switch" type="checkbox" checked aria-label="Bildirimler"></div>
-    <div class="list-row"><div class="card-icon">⌖</div><div><b>Konum izni hatırlatması</b><small>İzinler açık ve anlaşılır olmalı</small></div><input class="switch" type="checkbox" checked aria-label="Konum hatırlatması"></div>
+    <div class="list-row"><div class="card-icon">♧</div><div><b>Bildirimler</b><small>Bildirim tercihi</small></div><input class="switch" type="checkbox" checked aria-label="Bildirimler"></div>
+    <div class="list-row"><div class="card-icon">⌖</div><div><b>Konum izni hatırlatması</b><small>Konum izinleri hakkında hatırlatma</small></div><input class="switch" type="checkbox" checked aria-label="Konum hatırlatması"></div>
     <div class="list-row"><div class="card-icon">◐</div><div><b>Koyu tema</b><small>AileTakip görünümü</small></div><span class="tag green">Açık</span></div>
-    <div class="list-row"><div class="card-icon">↗</div><div><b>Uygulama sürümü</b><small>Ön yüz prototipi</small></div><span class="tag">0.1 DEMO</span></div>
+    <div class="list-row"><div class="card-icon">↗</div><div><b>Uygulama sürümü</b><small>AileTakip</small></div><span class="tag">1.0</span></div>
   </div>
 </section>
 
 <section class="page" id="privacy">
   <div class="section-head"><div><h2>Gizlilik ve KVKK</h2><p>Güven, açık bilgilendirmeyle başlar.</p></div></div>
-  <div class="card"><h3>Gizlilik ilkeleri</h3><p>AileTakip'in gerçek sürümünde hangi verilerin toplandığı, hangi amaçla işlendiği, kimlerle paylaşıldığı ve ne kadar süre saklandığı açıkça anlatılmalıdır. Kullanıcılar izinlerini yönetebilmeli ve uygun durumlarda izinlerini geri çekebilmelidir.</p>
+  <div class="card"><h3>Gizlilik ilkeleri</h3><p>Hangi verilerin toplandığı, hangi amaçla işlendiği, kimlerle paylaşıldığı ve ne kadar süre saklandığı kullanıcıya açıkça bildirilmelidir. Kullanıcılar izinlerini yönetebilmeli ve uygun durumlarda geri çekebilmelidir.</p>
     <div class="list-row"><div class="card-icon">⛨</div><div><b>Şeffaf izinler</b><small>Konum paylaşımı açık onayla</small></div></div>
     <div class="list-row"><div class="card-icon">⌁</div><div><b>Veri minimizasyonu</b><small>Gerekli olmayan veriler toplanmamalı</small></div></div>
-    <div class="list-row"><div class="card-icon">⌫</div><div><b>Silme ve erişim</b><small>Gerçek sürümde başvuru yöntemi belirtilmeli</small></div></div>
+    <div class="list-row"><div class="card-icon">⌫</div><div><b>Silme ve erişim</b><small>Veri başvuruları için açık yöntem sunulmalı</small></div></div>
   </div>
-  <div class="card" style="margin-top:12px"><h3>KVKK bilgilendirme taslağı</h3><p>Bu ekran hukuki olarak tamamlanmış bir aydınlatma metni değildir. Yayın öncesinde veri sorumlusu, iletişim bilgileri, işleme amaçları, hukuki sebepler, aktarım bilgileri, saklama süreleri ve ilgili kişi hakları projeye özel biçimde doldurulmalı ve uzman incelemesinden geçirilmelidir.</p><button class="btn secondary" onclick="toast('Bu alan bilgilendirme taslağıdır; yayın öncesi tamamlanmalıdır.')">Metin durumunu görüntüle</button></div>
+  <div class="card" style="margin-top:12px"><h3>KVKK bilgilendirme metni</h3><p>Bu metin, uygulamanın gerçek veri işleme faaliyetleri doğrultusunda tamamlanmalıdır. Veri sorumlusu, iletişim bilgileri, işleme amaçları, hukuki sebepler, aktarım bilgileri, saklama süreleri ve ilgili kişi hakları yayın öncesinde belirlenmelidir.</p><button class="btn secondary" onclick="toast('KVKK metni, uygulamanın gerçek veri işleme süreçlerine göre tamamlanmalıdır.')">Bilgilendirmeyi görüntüle</button></div>
 </section>
 
 <section class="page" id="social">
   <div class="section-head"><div><h2>Sosyal alan</h2><p>AileTakip topluluğu ve duyurular.</p></div></div>
-  <div class="card"><div class="card-icon">✦</div><h3>Topluluk yakında</h3><p>Güncellemeler, kullanım ipuçları ve duyurular için sosyal alan tasarlanıyor. Bu prototip herhangi bir sosyal hesaba bağlı değildir.</p></div>
+  <div class="card"><div class="card-icon">✦</div><h3>Topluluk</h3><p>Güncellemeler, kullanım ipuçları ve duyurular için sosyal alan.</p></div>
   <div class="card" style="margin-top:12px"><h3>Topluluk ilkeleri</h3><p>Saygı, güvenlik, mahremiyet ve açık iletişim. Başka kişilerin konum veya kişisel bilgileri izinsiz paylaşılmamalıdır.</p></div>
 </section>
 
 <section class="page" id="founder">
   <div class="hero"><div class="eyebrow">Kurucu hakkında</div><h1>MERT <span>YILDIRIM</span></h1><p>AileTakip projesinin kurucusu. Amaç; ailelerin açık izin, şeffaflık ve güven ilkeleriyle bağlantıda kalabileceği sade bir dijital deneyim oluşturmak.</p><div class="hero-actions"><button class="btn secondary" onclick="showPage('home')">Ana ekrana dön</button></div></div>
-  <div class="card" style="margin-top:14px"><h3>Proje yaklaşımı</h3><p>Güvenlik önce gelir. Gerçek konum, hesap ve aile bağlantısı özellikleri devreye alınmadan önce erişim kontrolleri, izin akışları ve veri koruma önlemleri tamamlanmalıdır.</p></div>
+  <div class="card" style="margin-top:14px"><h3>Proje yaklaşımı</h3><p>Güvenlik önce gelir. Konum, hesap ve aile bağlantısı özellikleri etkinleştirilirken erişim kontrolleri, izin akışları ve veri koruma önlemleri uygulanmalıdır.</p></div>
 </section>
 
 <section class="page" id="coming">
-  <div class="hero"><div class="eyebrow">Geliştirme planında</div><h1>Yeni özellikler<br><span>yakında.</span></h1><p>Kamera ve sesle ilgili özellikler bu sürümde etkin değildir. İleride sunulacak her özellik açık kullanım göstergeleri, gerekli izinler ve gizlilik kontrolleriyle tasarlanmalıdır.</p><div class="hero-actions"><button class="btn primary" onclick="showPage('home')">Ana ekrana dön</button></div></div>
+  <div class="hero"><div class="eyebrow">Geliştirme planında</div><h1>Yeni özellikler<br><span>yakında.</span></h1><p>Kamera ve ses özellikleri şu anda etkin değildir. Sunulacak her özellik açık kullanım göstergeleri, gerekli izinler ve gizlilik kontrolleriyle tasarlanmalıdır.</p><div class="hero-actions"><button class="btn primary" onclick="showPage('home')">Ana ekrana dön</button></div></div>
 </section>
-<footer><strong>AileTakip</strong> · Ön yüz prototipi<br>Kurucu: Mert Yıldırım · Gizlilik ve açık izin önceliklidir.<br>Bu demo gerçek kimlik doğrulama, canlı GPS veya sunucu bağlantısı içermez.</footer>
+
+<footer><strong>AileTakip</strong> · Aile güvenliği ve bağlantı platformu<br>Kurucu: Mert Yıldırım · Gizlilik ve açık izin önceliklidir.</footer>
 </main>
 
 <nav class="nav" aria-label="Alt menü">
@@ -130,21 +196,81 @@ footer{text-align:center;color:#747b8e;font-size:10px;line-height:1.8;padding:25
 
 <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
   <div class="modal-box">
-    <div class="card-icon">⌂</div><h2 id="loginTitle">AileTakip'e giriş</h2><p id="loginDesc">Hesap alanı — bu prototipte bilgileriniz kaydedilmez ve gerçek giriş yapılmaz.</p>
-    <div id="emailFields"><div class="field"><label>E-posta adresi</label><input type="email" placeholder="ornek@gmail.com" autocomplete="email"></div><div class="field"><label>Şifre</label><input type="password" placeholder="Şifreniz" autocomplete="current-password"></div></div>
-    <div id="codeFields" style="display:none"><div class="field"><label>Aile bağlantı kodu</label><input type="text" placeholder="Örn. AILE-12345"></div></div>
-    <div class="notice">Gerçek Gmail/şifre doğrulaması ve bağlantı kodu sistemi Firebase gibi bir kimlik doğrulama ve sunucu entegrasyonu gerektirir.</div>
-    <div class="modal-actions"><button class="btn quiet" onclick="closeLogin()">Kapat</button><button class="btn primary" onclick="toast('Bu prototipte gerçek giriş etkin değil.');">Devam et</button></div>
+    <div class="card-icon">⌂</div><h2 id="loginTitle">AileTakip'e giriş</h2>
+    <p id="loginDesc">Hesabınıza giriş yapın veya yeni hesap oluşturun.</p>
+    <div id="emailFields">
+      <div class="field"><label>E-posta adresi</label><input id="emailInput" type="email" placeholder="ornek@gmail.com" autocomplete="email"></div>
+      <div class="field"><label>Şifre</label><input id="passwordInput" type="password" placeholder="Şifreniz" autocomplete="current-password"></div>
+    </div>
+    <div id="codeFields" style="display:none"><div class="field"><label>Aile bağlantı kodu</label><input id="codeInput" type="text" placeholder="Aile bağlantı kodu" autocomplete="off"></div></div>
+    <div class="notice">Hesap doğrulaması ve aile bağlantısının çalışması için güvenli sunucu bağlantısı gereklidir.</div>
+    <div class="modal-actions"><button class="btn quiet" onclick="closeLogin()">Kapat</button><button class="btn primary" onclick="submitLogin()">Devam et</button></div>
   </div>
 </div>
-<div class="modal" id="toastModal" role="status" aria-live="polite"><div class="modal-box"><h2>Bilgi</h2><p id="toastText"></p><div class="modal-actions"><button class="btn primary" onclick="document.getElementById('toastModal').classList.remove('show')">Tamam</button></div></div></div>
+
+<div class="modal" id="toastModal" role="status" aria-live="polite">
+  <div class="modal-box"><h2>Bilgi</h2><p id="toastText"></p><div class="modal-actions"><button class="btn primary" onclick="document.getElementById('toastModal').classList.remove('show')">Tamam</button></div></div>
+</div>
+
 <script>
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});}
-function openLogin(mode){document.getElementById('loginModal').classList.add('show');document.getElementById('emailFields').style.display=mode==='email'?'block':'none';document.getElementById('codeFields').style.display=mode==='code'?'block':'none';document.getElementById('loginTitle').textContent=mode==='email'?'Giriş yap / Hesap oluştur':'Bağlantı koduyla katıl';document.getElementById('loginDesc').textContent=mode==='email'?'E-posta ve şifre alanı — gerçek kimlik doğrulaması henüz bağlı değil.':'Aile davet kodunu girin — bu prototipte kod doğrulanmaz.';}
-function closeLogin(){document.getElementById('loginModal').classList.remove('show');}
-function toast(message){document.getElementById('toastText').textContent=message;document.getElementById('toastModal').classList.add('show');}
-function copyCode(){let c=document.getElementById('inviteCode').value;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(c).then(()=>toast('Örnek kod kopyalandı: '+c)).catch(()=>toast('Örnek kod: '+c));}else toast('Örnek kod: '+c);}
-document.getElementById('loginModal').addEventListener('click',e=>{if(e.target.id==='loginModal')closeLogin()});
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function openLogin(mode){
+  document.getElementById('loginModal').classList.add('show');
+  document.getElementById('emailFields').style.display=mode==='email'?'block':'none';
+  document.getElementById('codeFields').style.display=mode==='code'?'block':'none';
+  document.getElementById('loginTitle').textContent=mode==='email'?'Giriş yap / Hesap oluştur':'Bağlantı koduyla katıl';
+  document.getElementById('loginDesc').textContent=mode==='email'?'E-posta ve şifre ile devam edin.':'Aile bağlantı kodunuzu girin.';
+}
+function closeLogin(){document.getElementById('loginModal').classList.remove('show')}
+function toast(message){
+  document.getElementById('toastText').textContent=message;
+  document.getElementById('toastModal').classList.add('show');
+}
+async function copyCode(){
+  const input=document.getElementById('inviteCode');
+  const code=input.value.trim();
+  if(!code){toast('Önce aile bağlantı kodunu girin.');return}
+  try{
+    await navigator.clipboard.writeText(code);
+    toast('Kod kopyalandı.');
+  }catch(e){
+    input.focus();input.select();
+    toast('Kodu seçip kopyalayabilirsiniz.');
+  }
+}
+function submitLogin(){
+  toast('Giriş ve aile bağlantısı için kimlik doğrulama sistemi henüz yapılandırılmalıdır.');
+}
+function requestLocation(){
+  const result=document.getElementById('locationResult');
+  if(!('geolocation' in navigator)){
+    result.textContent='Bu tarayıcı konum özelliğini desteklemiyor.';
+    return;
+  }
+  result.textContent='Konum izni bekleniyor…';
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      result.textContent='Bu cihazın konumu alındı: '+pos.coords.latitude.toFixed(5)+', '+pos.coords.longitude.toFixed(5)+'. Bu bilgi şu anda aile üyelerine gönderilmiyor.';
+    },
+    err=>{
+      result.textContent=err.code===1?'Konum izni verilmedi. Tarayıcı ayarlarından izin verebilirsiniz.':'Konum alınamadı. GPS ve cihaz ayarlarını kontrol edin.';
+    },
+    {enableHighAccuracy:true,timeout:12000,maximumAge:0}
+  );
+}
+document.getElementById('loginModal').addEventListener('click',e=>{
+  if(e.target.id==='loginModal')closeLogin();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    closeLogin();
+    document.getElementById('toastModal').classList.remove('show');
+  }
+});
 </script>
 </body>
 </html>
