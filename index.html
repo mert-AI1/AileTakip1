@@ -392,9 +392,9 @@ async function submitLogin() {
   }
 
   try {
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email: email,
-      password: password
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
     });
 
     if (error) {
@@ -402,13 +402,29 @@ async function submitLogin() {
       return;
     }
 
-    toast('Giriş başarılı!');
     closeLogin();
+
+    document.querySelector('.hero-actions').innerHTML = `
+      <button class="btn primary" onclick="showPage('settings')">Hesabım</button>
+      <button class="btn secondary" onclick="logout()">Çıkış yap</button>
+    `;
+
+    toast('Giriş başarılı! Hesabınıza bağlandınız.');
   } catch (e) {
     toast('Bağlantı hatası. Tekrar deneyin.');
   }
 }
 
+async function logout() {
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    toast('Çıkış yapılamadı. Tekrar deneyin.');
+    return;
+  }
+
+  location.reload();
+}
 
 function requestLocation(){
   const result=document.getElementById('locationResult');
