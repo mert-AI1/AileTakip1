@@ -744,22 +744,33 @@ document.addEventListener('keydown',e=>{
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
- function updateLoginScreen(session) {
+ 
+function updateLoginScreen(session) {
   const actions = document.querySelector('#home .hero-actions');
   if (!actions) return;
 
   if (session && session.user) {
     actions.innerHTML = `
-      <button class="btn primary" onclick="showPage('settings')">Hesabım</button>
-      <button class="btn secondary" onclick="logout()">Çıkış yap</button>
+      <button class="btn primary"
+        onclick="showPage('settings')">Hesabım</button>
+
+      <button class="btn secondary"
+        onclick="openLogin('code')">Aileye Katıl</button>
+
+      <button class="btn secondary"
+        onclick="logout()">Çıkış yap</button>
     `;
   } else {
     actions.innerHTML = `
-      <button class="btn primary" onclick="openLogin('email')">Giriş yap / Hesap oluştur</button>
-      <button class="btn secondary" onclick="openLogin('code')">Bağlantı koduyla katıl</button>
+      <button class="btn primary"
+        onclick="openLogin('email')">Giriş yap / Hesap oluştur</button>
+
+      <button class="btn secondary"
+        onclick="openLogin('code')">Bağlantı koduyla katıl</button>
     `;
   }
 }
+
 
 supabaseClient.auth.getSession().then(({ data, error }) => {
   if (!error) updateLoginScreen(data.session);
@@ -769,6 +780,120 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
   updateLoginScreen(session);
 });
 </script>
+
+<!-- AİLETAKİP YARDIM DÜĞMESİ -->
+<button id="helpButton" onclick="openHelp()"
+  aria-label="Yardım ve kullanım rehberi"
+  style="position:fixed;right:16px;top:16px;z-index:9998;
+  width:46px;height:46px;border-radius:50%;border:1px solid #ff4058;
+  background:#171014;color:#ff5267;font-size:25px;font-weight:bold;
+  box-shadow:0 0 16px #ff304044;cursor:pointer">?</button>
+
+<!-- YARDIM MERKEZİ -->
+<div id="helpPanel" style="display:none;position:fixed;inset:0;z-index:9999;
+  background:#09090df5;color:#f5f5f7;overflow:auto;padding:22px 16px;
+  font-family:Arial,sans-serif">
+  <div style="max-width:650px;margin:20px auto">
+    <button onclick="closeHelp()" style="float:right;background:#241117;
+      color:#ff5267;border:1px solid #ff4058;border-radius:10px;
+      padding:10px 14px">✕ Kapat</button>
+
+    <h1 style="color:#ff5267;margin-top:35px">AileTakip</h1>
+    <h2>Yardım ve Kullanım Rehberi</h2>
+    <p style="color:#c7c7ce">İhtiyacın olan başlığa dokun ve adım adım öğren.</p>
+
+    <div id="helpTopics"></div>
+
+    <p style="font-size:12px;color:#999;margin-top:25px">
+      Gizlilik notu: Konum paylaşımı cihaz izni ve açık kullanıcı onayı gerektirir.
+      Bu rehber, henüz etkinleştirilmemiş özellikleri çalışır hâle getirmez.
+    </p>
+    <button onclick="closeHelp()" style="width:100%;padding:14px;
+      background:#ff4058;color:white;border:0;border-radius:12px;
+      font-size:16px">Uygulamaya geri dön</button>
+  </div>
+</div>
+
+<script>
+const helpContent = [
+  {
+    title: "1. Hesap oluşturma ve giriş",
+    text: "Giriş yap / Hesap oluştur seçeneğini aç. E-posta adresini ve şifreni gir. Yeni kullanıcıysan hesap oluştur; mevcut hesabın varsa giriş yap. E-posta doğrulaması istenirse gelen yönergeleri izle."
+  },
+  {
+    title: "2. Aile kurma ve bağlantı kodu",
+    text: "Ebeveyn hesabıyla giriş yap. Ebeveyn bölümünde Kod oluştur düğmesine bas. Oluşan kodu yalnızca katılmasını istediğin kişiyle paylaş. Kodun süresi dolarsa yeni kod oluştur."
+  },
+  {
+    title: "3. Aile koduyla katılma",
+    text: "Önce kendi hesabına giriş yap. Ana ekrandaki Aileye Katıl veya Bağlantı koduyla katıl seçeneğini aç. Aile kodunu kod kutusuna yaz ve katılma işlemini başlat. Kod geçersizse yazımı, süresini ve kodun daha önce kullanılıp kullanılmadığını kontrol et."
+  },
+  {
+    title: "4. Konum paylaşımı",
+    text: "Konum bölümünü aç. Cihazın konum iznini yalnızca paylaşmak istiyorsan ver. Ardından uygulamada gerçek konum paylaşımı özelliğinin etkin olup olmadığını kontrol et. Haritada konum görünmesi için cihazdan konum alma ve sunucuya güvenli aktarım işlevlerinin gerçekten kurulmuş olması gerekir."
+  },
+  {
+    title: "5. Konum görünmüyor",
+    text: "Cihazın konum iznini, internet bağlantısını ve uygulama içindeki paylaşım durumunu kontrol et. Konum servisi henüz sunucuya bağlanmadıysa bu adımlar tek başına canlı aile haritası oluşturmaz."
+  },
+  {
+    title: "6. Ayarlar ve hesap",
+    text: "Ayarlar bölümünden uygulamadaki mevcut seçenekleri incele. Hesabım düğmesi hesap alanını açar. Çıkış yap düğmesi mevcut oturumu kapatır. Şifreni kimseyle paylaşma."
+  },
+  {
+    title: "7. Gizlilik ve KVKK",
+    text: "Gizlilik ve KVKK bölümündeki bilgilendirmeyi oku. Hangi verilerin toplandığını, neden işlendiğini, kimlerle paylaşıldığını ve ne kadar saklandığını kontrol et. Uygulama yayına alınmadan önce metinler gerçek veri akışına uygun olmalıdır."
+  },
+  {
+    title: "8. Güvenlik ve izinler",
+    text: "Aile bağlantı kodunu herkese açık paylaşma. Kamera, mikrofon ve konum izinlerini yalnızca gerekli olduğunda ver. Başkasının cihazını izinsiz takip etme. İzinleri cihazının ayarlarından istediğin zaman gözden geçir."
+  },
+  {
+    title: "9. Kamera ve ses özellikleri",
+    text: "Kamera takibi veya ses kaydı ekranda Yakında olarak görünüyorsa özellik henüz kullanıma hazır değildir. Bu rehber bu özellikleri etkinleştirmez. Kullanıma açılmaları için açık rıza, güvenlik önlemleri ve gerekli teknik altyapı gerekir."
+  },
+  {
+    title: "10. Sosyal bölüm",
+    text: "Sosyal bölümde görünen mevcut özellikleri kullan. Bir seçenek çalışmıyorsa veya Yakında yazıyorsa henüz etkinleştirilmemiş olabilir. Kişisel bilgilerini herkese açık alanlarda paylaşırken dikkatli ol."
+  },
+  {
+    title: "11. Sık sorulan sorular",
+    text: "Kod geçersiz: Kodun doğru ve süresi içinde olduğunu kontrol et. Giriş tekrar isteniyor: Sayfayı yenile ve oturumunu kontrol et. Aileye katılma başarısız: Hesapla giriş yaptığından emin ol. Konum görünmüyor: Canlı konum aktarımının gerçekten kurulmuş olması gerekir."
+  },
+  {
+    title: "12. Kurucu ve uygulama hakkında",
+    text: "AileTakip'in kurucusu ve uygulama bilgileri için uygulamadaki Kurucu bölümünü aç. Bu rehber uygulama hakkında bilgi verir; uygulamanın resmî onay, sertifika veya güvenlik denetiminden geçtiğini tek başına göstermez."
+  }
+];
+
+function openHelp() {
+  const panel = document.getElementById("helpPanel");
+  const topics = document.getElementById("helpTopics");
+  if (!panel || !topics) return;
+
+  if (!topics.dataset.ready) {
+    topics.innerHTML = helpContent.map((item, index) => `
+      <details style="margin:12px 0;background:#141419;
+        border:1px solid #39202a;border-radius:12px;padding:14px">
+        <summary style="cursor:pointer;color:#ff6578;font-weight:bold;
+          line-height:1.5">${item.title}</summary>
+        <p style="color:#e0e0e5;line-height:1.7">${item.text}</p>
+      </details>
+    `).join("");
+    topics.dataset.ready = "1";
+  }
+
+  panel.style.display = "block";
+  document.body.style.overflow = "hidden";
+}
+
+function closeHelp() {
+  const panel = document.getElementById("helpPanel");
+  if (panel) panel.style.display = "none";
+  document.body.style.overflow = "";
+}
+</script>
+</body>
 
 </body>
 </html>
