@@ -289,7 +289,7 @@ body.light-theme .road {
   <div class="card"><div class="card-top"><div><h3 style="margin:0">Aile alanı</h3><p style="margin-top:6px">Aile hesabı bağlantısı gereklidir.</p></div><div class="card-icon">♧</div></div>
     <div class="field"><label>Aile bağlantı kodu</label><input id="inviteCode" placeholder="Bağlantı kodunuz" maxlength="40" autocomplete="off"></div>
     <button class="btn primary" onclick="copyCode()">Kodu kopyala</button>
-    <button class="btn secondary" onclick="toast('Bağlantı kodu oluşturmak için sunucu ve hesap sistemi etkinleştirilmelidir.')" style="margin-left:5px">Kod oluştur</button>
+<button class="btn secondary" onclick="createInvite()" style="margin-left:5px">Kod oluştur</button>
     <div class="notice">Aile kodlarının güvenli oluşturulması ve doğrulanması için hesap ve sunucu bağlantısı gereklidir.</div>
   </div>
   <div class="card" style="margin-top:12px"><h3>Güvenlik tercihleri</h3>
@@ -450,7 +450,7 @@ body.light-theme .road {
 
 <div class="modal-actions" style="flex-wrap:wrap">
   <button class="btn quiet" onclick="closeLogin()">Kapat</button>
-  <button class="btn secondary" onclick="submitLogin()">Giriş yap</button>
+<button class="btn secondary" onclick="submitLogin()">Giriş yap</button>
   <button class="btn primary" onclick="registerAccount()">Hesap oluştur</button>
 </div>
 
@@ -491,7 +491,30 @@ async function copyCode(){
     toast('Kodu seçip kopyalayabilirsiniz.');
   }
 }
+async function createInvite() {
+  try {
+    const { data: { user }, error: userError } =
+      await supabaseClient.auth.getUser();
 
+    if (userError || !user) {
+      toast('Önce e-posta ve şifrenizle giriş yapın.');
+      return;
+    }
+
+    const { data, error } =
+      await supabaseClient.rpc('create_family_invite');
+
+    if (error) {
+      toast('Kod oluşturulamadı: ' + error.message);
+      return;
+    }
+
+    document.getElementById('inviteCode').value = data;
+    toast('Bağlantı kodunuz oluşturuldu. Güvenliğiniz için kodu yalnızca katılmasını istediğiniz kişiyle paylaşın. Kod 24 saat geçerlidir.');
+  } catch (e) {
+    toast('Bağlantı hatası. Sayfayı yenileyip tekrar deneyin.');
+  }
+}
 function toggleTheme() {
   const isLight = document.body.classList.toggle('light-theme');
 
@@ -583,6 +606,45 @@ async function registerAccount() {
   }
 }
 async function submitLogin() {
+  const codeMode =
+    document.getElementById('codeFields').style.display !== 'none';
+
+  if (codeMode) {
+    const code = document.getElementById('codeInput').value.trim();
+
+    if (!code) {
+      toast('Aile bağlantı kodunu girin.');
+      return;
+    }
+
+    try {
+      const { data: { user }, error: userError } =
+        await supabaseClient.auth.getUser();
+
+      if (userError || !user) {
+        toast('Önce e-posta ve şifrenizle giriş yapın, ardından bağlantı kodunu kullanın.');
+        return;
+      }
+
+      const { data, error } = await supabaseClient.rpc(
+        'join_family_with_code',
+        { p_code: code }
+      );
+
+      if (error) {
+        toast('Aileye katılınamadı: ' + error.message);
+        return;
+      }
+
+      closeLogin();
+      toast(data || 'Aileye başarıyla katıldınız.');
+    } catch (e) {
+      toast('Bağlantı hatası. Tekrar deneyin.');
+    }
+
+    return;
+  }
+
   const email = document.getElementById('emailInput').value.trim();
   const password = document.getElementById('passwordInput').value;
 
@@ -592,7 +654,7 @@ async function submitLogin() {
   }
 
   try {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
+    const { error } = await supabaseClient.auth.signInWithPassword({
       email,
       password
     });
@@ -603,13 +665,7 @@ async function submitLogin() {
     }
 
     closeLogin();
-
-    document.querySelector('.hero-actions').innerHTML = `
-      <button class="btn primary" onclick="showPage('settings')">Hesabım</button>
-      <button class="btn secondary" onclick="logout()">Çıkış yap</button>
-    `;
-
-    toast('Giriş başarılı! Hesabınıza bağlandınız.');
+    toast('Giriş başarılı!');
   } catch (e) {
     toast('Bağlantı hatası. Tekrar deneyin.');
   }
