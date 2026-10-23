@@ -895,5 +895,64 @@ function closeHelp() {
 </script>
 </body>
 
+<section id="ailemPanel" style="display:block;margin:20px auto;padding:20px;max-width:700px;background:#111318;color:white;border:1px solid #30343d;border-radius:20px;font-family:Arial,sans-serif">
+  <h2>👨‍👩‍👧‍👦 Ailem</h2>
+  <p style="color:#a9adb8">Aile üyelerin ve konum paylaşım durumları</p>
+  <div id="ailemUyeListesi">Aile üyeleri yükleniyor...</div>
+  <button onclick="ailemPaneliYenile()" style="width:100%;padding:13px;margin-top:15px;border:0;border-radius:12px;background:#c92735;color:white">
+    ↻ Listeyi yenile
+  </button>
+</section>
+
+<script>
+async function ailemPaneliYenile() {
+  const liste = document.getElementById('ailemUyeListesi');
+
+  if (typeof supabaseClient === 'undefined') {
+    liste.textContent = 'Veritabanı bağlantısı bulunamadı.';
+    return;
+  }
+
+  liste.textContent = 'Aile üyeleri yükleniyor...';
+
+  const { data, error } =
+    await supabaseClient.rpc('get_my_family_members');
+
+  if (error) {
+    liste.textContent = 'Aile listesi yüklenemedi.';
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    liste.textContent = 'Henüz aile üyesi bulunamadı.';
+    return;
+  }
+
+  liste.replaceChildren();
+
+  data.forEach(uye => {
+    const kart = document.createElement('div');
+    kart.style.cssText =
+      'padding:14px;margin:10px 0;background:#1b1e25;border:1px solid #30343d;border-radius:14px';
+
+    const ad = document.createElement('strong');
+    ad.textContent = uye.user_id;
+
+    const rol = document.createElement('p');
+    rol.textContent =
+      uye.role === 'parent' ? 'Ebeveyn' : 'Aile üyesi';
+
+    const durum = document.createElement('p');
+    durum.style.color = '#a9adb8';
+    durum.textContent = 'Konum paylaşımı henüz bağlanmadı';
+
+    kart.append(ad, rol, durum);
+    liste.appendChild(kart);
+  });
+}
+
+ailemPaneliYenile();
+</script>
+
 </body>
 </html>
