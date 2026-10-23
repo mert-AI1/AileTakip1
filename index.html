@@ -744,6 +744,30 @@ document.addEventListener('keydown',e=>{
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
+ function updateLoginScreen(session) {
+  const actions = document.querySelector('#home .hero-actions');
+  if (!actions) return;
+
+  if (session && session.user) {
+    actions.innerHTML = `
+      <button class="btn primary" onclick="showPage('settings')">Hesabım</button>
+      <button class="btn secondary" onclick="logout()">Çıkış yap</button>
+    `;
+  } else {
+    actions.innerHTML = `
+      <button class="btn primary" onclick="openLogin('email')">Giriş yap / Hesap oluştur</button>
+      <button class="btn secondary" onclick="openLogin('code')">Bağlantı koduyla katıl</button>
+    `;
+  }
+}
+
+supabaseClient.auth.getSession().then(({ data, error }) => {
+  if (!error) updateLoginScreen(data.session);
+});
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  updateLoginScreen(session);
+});
 </script>
 
 </body>
